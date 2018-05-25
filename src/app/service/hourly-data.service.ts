@@ -5,4 +5,7 @@ export class HourlyDataService {
 
   constructor() { }
 
+  readDataFromFile() {
+    
+  }
 }
