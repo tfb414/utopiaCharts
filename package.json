@@ -23,6 +23,7 @@
     "@angular/router": "^5.0.0",
     "chart.js": "^2.7.1",
     "core-js": "^2.4.1",
+    "dotenv": "^5.0.1",
     "puppeteer": "^1.4.0",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"

@@ -30,11 +30,15 @@ async function main(){
         console.log('error navigating to kd page');
     }
 
-    try{
+    // try{
         await kingdomTableRows(page);
-    } catch (err){
-        console.log('error selecting table rows');
-    }
+    // } catch (err){
+    //     console.log('error selecting table rows');
+    // }
+
+    await selectTotalLand(page);
+    await selectTotalNetworth(page);
+    // await selectTotalHonor(page);
    
 }
 
@@ -67,8 +71,38 @@ async function kingdomTableRows(page){
         }, i);
         table.push(row);
     }
-    console.log(table);
+    // console.log(table);
     return table;
+}
+
+async function selectTotalLand(page) {
+    await delay(5000);
+    let table = [];
+    const totalLand = await page.evaluate(()=>{
+        return document.querySelectorAll('.two-column-stats > tbody > tr')[2].childNodes[3].textContent;
+    })
+    console.log('acres: ', totalLand);
+    return totalLand;
+}
+
+async function selectTotalNetworth(page) {
+    await delay(5000);
+    let table = [];
+    const totalNetworth = await page.evaluate(()=>{
+        return document.querySelectorAll('.two-column-stats > tbody > tr')[1].childNodes[3].textContent;
+    })
+    console.log('networth: ', totalNetworth);
+    return totalNetworth;
+}
+
+async function selectTotalHonor(page) {
+    await delay(5000);
+    let table = [];
+    const totalHonor = await page.evaluate(()=>{
+        return document.querySelectorAll('.two-column-stats > tbody > tr')[1].childNodes[3].textContent;
+    })
+    console.log(totalHonor);
+    return totalHonor;
 }
 
 async function delay(time) {
