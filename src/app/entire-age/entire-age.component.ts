@@ -1,14 +1,13 @@
 import { Component, OnInit, ElementRef, AfterViewInit } from "@angular/core";
-import { WeatherService } from "../service/weather.service";
 import { Chart } from "chart.js";
 import { KingdomApiService } from "../services/kingdom-api.service";
 
 @Component({
-  selector: "app-entire-age-chart",
-  templateUrl: "./entire-age-chart.component.html",
-  styleUrls: ["./entire-age-chart.component.css"]
+  selector: "app-entire-age",
+  templateUrl: "./entire-age.component.html",
+  styleUrls: ["./entire-age.component.css"]
 })
-export class EntireAgeChartComponent implements AfterViewInit {
+export class EntireAgeComponent implements AfterViewInit {
   chart: any = [];
 
   constructor(
@@ -28,25 +27,34 @@ export class EntireAgeChartComponent implements AfterViewInit {
   }
   createChart(ctx) {
     this._kingdomAPI.getData().subscribe((data) => {
-      let weatherDates = data.weatherDates;
-      let temp_max = data.temp_max;
-      let temp_min = data.temp_min;
+
+      let ageData = data['age'];
+      let landAverage = ageData['landAverage'];
+      let landTotal = ageData['landTotal'];
+      let networthAverage = ageData['networthAverage'];
+      let networthTotal = ageData['networthTotal'];
+      let honorTotal = ageData['honorTotal'];
+      let currentDate = ageData['currentDate'];
+
+      // let weatherDates = data.weatherDates;
+      // let temp_max = data.temp_max;
+      // let temp_min = data.temp_min;
 
       this.chart = new Chart(ctx, {
         type: "line",
         data: {
-          labels: weatherDates,
+          labels: currentDate,
           datasets: [
             {
-              data: temp_max,
+              data: landAverage,
               borderColor: "#3cba9f",
               fill: false
-            },
-            {
-              data: temp_min,
-              borderColor: "#ffcc00",
-              fill: false
             }
+            // {
+            //   data: landTotal,
+            //   borderColor: "#ffcc00",
+            //   fill: false
+            // }
           ]
         },
         options: {

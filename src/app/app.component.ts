@@ -7,5 +7,5 @@ import { Chart } from 'chart.js';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+  
 }

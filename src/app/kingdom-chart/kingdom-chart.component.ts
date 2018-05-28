@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { WeatherService } from '../service/weather.service';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { Chart } from 'chart.js'
+import { KingdomApiService } from '../services/kingdom-api.service';
 
 @Component({
   selector: 'app-kingdom-chart',
@@ -11,13 +11,16 @@ export class KingdomChartComponent implements OnInit {
 
   chart: any = [];
   
-  constructor(private _weather: WeatherService) {}
+  constructor(
+    private _kingdomAPI: KingdomApiService,
+    private elementRef: ElementRef,
+  ) {}
 
   ngOnInit() {
-    this._weather.dailyForecast()
-      .subscribe(res => {
+    this._kingdomAPI.getData().subscribe((data) => {
 
-        console.log(res);
+        console.log('weather data', data);
+
         // let temp_max = res['list'].map(res => res.main.temp_max)
         // let temp_min = res['list'].map(res => res.main.temp_min)
         // let alldates = res['list'].map(res => res.dt)

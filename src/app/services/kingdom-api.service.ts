@@ -1,25 +1,15 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import "rxjs/add/operator/map";
 
 @Injectable()
 export class KingdomApiService {
+  constructor(private _http: HttpClient) {}
 
-  constructor() { }
-  
-
-  getData(): Observable<any> {
-    let data = {
-      temp_max: [100,200,300, 100, 300, 500, 600, 700, 1500],
-      temp_min: [500,600,1000, 1100, 1300, 1350, 1400, 1500, 1200],
-      weatherDates:['feb1', 'feb2', 'feb3', 'feb4', 'feb5', 'feb6', 'feb7', 'feb8', 'feb9' ],
-    }
-
-    return Observable.of(data);
+  getData() {
+    return this._http.get("https://timbrady.net/data.txt").map((result) => {
+      console.log('kingdom-api inside map', result);
+      return result;
+    });
   }
 }
-
-
-
-
-   

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EntireAgeChartComponent } from './entire-age-chart.component';
+import { EntireAgeComponent } from './entire-age.component';
 
 describe('EntireAgeChartComponent', () => {
-  let component: EntireAgeChartComponent;
-  let fixture: ComponentFixture<EntireAgeChartComponent>;
+  let component: EntireAgeComponent;
+  let fixture: ComponentFixture<EntireAgeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ EntireAgeChartComponent ]
+      declarations: [ EntireAgeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EntireAgeChartComponent);
+    fixture = TestBed.createComponent(EntireAgeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
