@@ -7,12 +7,14 @@ import { KingdomChartComponent } from './kingdom-chart/kingdom-chart.component';
 import { AppRoutingModule } from './app-routing.module';
 import { EntireAgeComponent } from './entire-age/entire-age.component';
 import { KingdomApiService } from './services/kingdom-api.service';
+import { EntireAgeChartComponent } from './entire-age-chart/entire-age-chart.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     KingdomChartComponent,
-    EntireAgeComponent
+    EntireAgeComponent,
+    EntireAgeChartComponent
   ],
   imports: [
     AppRoutingModule,

@@ -1,0 +1,15 @@
+
+<p>
+  entire-age-chart works!
+</p>
+
+<div *ngIf="chart">
+  <canvas id="canvas">{{ chart }}</canvas>
+</div>
+<div class='chart-data'>
+  <button (click)="changeChartData('landTotal')">Total Land</button>
+  <button (click)="changeChartData('landAverage')">Average Land</button>
+  <button (click)="changeChartData('networthTotal')">Total Networth</button>
+  <button (click)="changeChartData('networthAverage')">Average Networth</button>
+  <button (click)="changeChartData('honorTotal')">Total Honor</button>
+</div>
