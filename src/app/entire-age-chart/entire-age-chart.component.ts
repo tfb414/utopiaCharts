@@ -11,19 +11,51 @@ export class EntireAgeChartComponent implements AfterViewInit {
   @Input('data') data: string;  
   chart: any = [];
 
+  landTotal: false;
+  landAverage: true;
+  networthAverage: false;
+  networthTotal: false;
+  honorTotal: false;
+
   constructor(
     private _kingdomAPI: KingdomApiService,
     private elementRef: ElementRef,
   ) {}
 
+  createChartData = (dates, datasets) => {
+    let chartData = {
+      type: "line",
+      data: {
+        labels: dates,
+        datasets: []
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [
+            {
+              display: true
+            }
+          ],
+          yAxes: [
+            {
+              display: true
+            }
+          ]
+        }
+      }
+    }
 
-  //5 charts at the beginning and ng show and hide based on the button click
-  ngOnInit() {
-    
+    let newChartData = {...chartData}
+    newChartData.data.datasets = datasets;
+    return newChartData;
+
   }
 
-  ngOnChanges() {
-    
+  ngOnInit() {
+
   }
 
   ngAfterViewInit() {
@@ -33,56 +65,46 @@ export class EntireAgeChartComponent implements AfterViewInit {
     })
   }
 
-  changeChartData(string){
-  }
-
   createChart(ctx) {
     this._kingdomAPI.getData().subscribe((data) => {
-      const ageData = data['age'];
-      const landAverage = ageData['landAverage'];
+
+      const dates = Object.keys(data);
+
+     
       
-      // const landTotal = ageData['landTotal'];
-      // const networthAverage = ageData['networthAverage'];
-      // const networthTotal = ageData['networthTotal'];
-      // const honorTotal = ageData['honorTotal'];
+      
+      let kingdomTotals = dates.map((day)=> {
+        return data[day].ourKd.totals.landAverage;
+        // console.log(kingdomTotals.ourKdData["landTotal"]);
+      })
 
-      const currentDate = ageData['currentDate'];
+      let enemyKdTotals = dates.map((day)=> {
+        return data[day].enemyKd.totals.landAverage;
+        // console.log(kingdomTotals.ourKdData["landTotal"]);
+      })
 
-      this.chart = new Chart(ctx, {
-        type: "line",
-        data: {
-          labels: currentDate,
-          datasets: [
-            {
-              data: landAverage,
-              borderColor: "#3cba9f",
-              fill: false
-            }
-            // {
-            //   data: landTotal,
-            //   borderColor: "#ffcc00",
-            //   fill: false
-            // }
-          ]
-        },
-        options: {
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [
-              {
-                display: true
-              }
-            ],
-            yAxes: [
-              {
-                display: true
-              }
-            ]
-          }
-        }
-      });
+      
+
+      const kdTotalDataset = {
+        data: kingdomTotals,
+        borderColor: "green",
+        fill: false
+      }
+
+      const enemyKdTotalsDataset = {
+        data: enemyKdTotals,
+        borderColor: "red",
+        fill: false
+      }
+      
+      let derp = this.createChartData(dates, [kdTotalDataset, enemyKdTotalsDataset])
+      
+      // newChartData.data.datasets[1] = enemyKdTotals;
+
+      this.chart = new Chart(ctx, derp);
     });
   }
+
+  
+
 }
