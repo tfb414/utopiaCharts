@@ -74,12 +74,12 @@ export class EntireAgeChartComponent implements AfterViewInit {
       
       
       let kingdomTotals = dates.map((day)=> {
-        return data[day].ourKd.totals.landAverage;
+        return data[day].ourKd.totals.networthTotal;
         // console.log(kingdomTotals.ourKdData["landTotal"]);
       })
 
       let enemyKdTotals = dates.map((day)=> {
-        return data[day].enemyKd.totals.landAverage;
+        return data[day].enemyKd.totals.networthTotal;
         // console.log(kingdomTotals.ourKdData["landTotal"]);
       })
 
