@@ -77,7 +77,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n\n\n<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    We should withdraw\n  </h1>\n  <!-- <nav>\n    <a routerLink=\"/entire-age\">Entire Age</a>\n    \n  </nav> -->\n  <router-outlet></router-outlet>\n  <app-entire-age-chart></app-entire-age-chart>\n\n</div>\n\n"
+module.exports = "<!--The content below is only a placeholder and can be replaced.-->\n\n\n<!--The content below is only a placeholder and can be replaced.-->\n<div style=\"text-align:center\">\n  <h1>\n    We Hurt Charts\n  </h1>\n  <!-- <nav>\n    <a routerLink=\"/entire-age\">Entire Age</a>\n    \n  </nav> -->\n  <router-outlet></router-outlet>\n  <app-entire-age-chart></app-entire-age-chart>\n\n</div>\n\n"
 
 /***/ }),
 
@@ -188,7 +188,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/entire-age-chart/entire-age-chart.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p>Average acre change over the course of this war</p>\n<div *ngIf=\"chart\">\n  <canvas id=\"canvas\">{{ chart }}</canvas>\n</div>\n<div class='chart-data'>\n  \n  <!-- <button ng-if=\"\"Average Land</button>\n  <button ng-if=\"\"Total Networth</button>\n  <button ng-if=\"\"Average Networth</button>\n  <button ng-if=\"\"Total Honor</button> -->\n</div>\n"
+module.exports = "<!-- \n<div *ngIf=true>\n    <p>Average Networth per acre</p>\n  <canvas id=\"networthAverageChartCanvas\">{{ networthAverageChart }}</canvas>\n</div> -->\n<div *ngIf=true>\n    <p>Networth Total</p>\n  <canvas id=\"networthTotalsChartCanvas\">{{ networthTotalChart }}</canvas>\n</div>\n<!-- <div class='chart-data'> -->\n  \n  <!-- <button ng-if=\"\"Average Land</button>\n  <button ng-if=\"\"Total Networth</button>\n  <button ng-if=\"\"Average Networth</button>\n  <button ng-if=\"\"Total Honor</button> -->\n<!-- </div> -->\n"
 
 /***/ }),
 
@@ -225,7 +225,11 @@ var EntireAgeChartComponent = (function () {
     function EntireAgeChartComponent(_kingdomAPI, elementRef) {
         this._kingdomAPI = _kingdomAPI;
         this.elementRef = elementRef;
-        this.chart = [];
+        this.networthTotalChart = [];
+        this.networthAverageChart = [];
+        this.landTotalChart = [];
+        this.landAverageChart = [];
+        this.honorTotalChart = [];
         this.createChartData = function (dates, datasets) {
             var chartData = {
                 type: "line",
@@ -261,35 +265,54 @@ var EntireAgeChartComponent = (function () {
     EntireAgeChartComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
         setTimeout(function () {
-            var ctx = _this.elementRef.nativeElement.querySelector("#canvas");
+            var ctx = _this.elementRef.nativeElement.querySelector("#networthAverageChartCanvas");
+            var ctx2 = _this.elementRef.nativeElement.querySelector("#networthTotalsChartCanvas");
             _this.createChart(ctx);
+            _this.createChart(ctx2);
         });
     };
     EntireAgeChartComponent.prototype.createChart = function (ctx) {
         var _this = this;
         this._kingdomAPI.getData().subscribe(function (data) {
             var dates = Object.keys(data);
-            var kingdomTotals = dates.map(function (day) {
+            //Networth Total
+            var ourKDnetworthTotal = dates.map(function (day) {
                 return data[day].ourKd.totals.networthTotal;
-                // console.log(kingdomTotals.ourKdData["landTotal"]);
             });
-            var enemyKdTotals = dates.map(function (day) {
+            var enemyKdNetworthTotal = dates.map(function (day) {
                 return data[day].enemyKd.totals.networthTotal;
-                // console.log(kingdomTotals.ourKdData["landTotal"]);
             });
-            var kdTotalDataset = {
-                data: kingdomTotals,
+            var ourKDnetworthTotalData = {
+                data: ourKDnetworthTotal,
                 borderColor: "green",
                 fill: false
             };
-            var enemyKdTotalsDataset = {
-                data: enemyKdTotals,
+            var enemyKdNetworthTotalData = {
+                data: enemyKdNetworthTotal,
                 borderColor: "red",
                 fill: false
             };
-            var derp = _this.createChartData(dates, [kdTotalDataset, enemyKdTotalsDataset]);
-            // newChartData.data.datasets[1] = enemyKdTotals;
-            _this.chart = new __WEBPACK_IMPORTED_MODULE_1_chart_js__["Chart"](ctx, derp);
+            //networthAverage
+            var ourKDnetworthAverage = dates.map(function (day) {
+                return data[day].ourKd.totals.networthAverage;
+            });
+            var enemyKdNetworthAverage = dates.map(function (day) {
+                return data[day].enemyKd.totals.networthAverage;
+            });
+            var ourKDnetworthAverageData = {
+                data: ourKDnetworthTotal,
+                borderColor: "green",
+                fill: false
+            };
+            var enemyKdNetworthAverageData = {
+                data: enemyKdNetworthTotal,
+                borderColor: "red",
+                fill: false
+            };
+            var networthTotal = _this.createChartData(dates, [ourKDnetworthTotalData, enemyKdNetworthTotalData]);
+            // let networthAverage = this.createChartData(dates, [ourKDnetworthAverageData, enemyKdNetworthAverageData])
+            _this.networthTotalChart = new __WEBPACK_IMPORTED_MODULE_1_chart_js__["Chart"](ctx, networthTotal);
+            // this.networthAverageChart = new Chart(ctx, networthAverage);
         });
     };
     __decorate([

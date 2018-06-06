@@ -9,7 +9,11 @@ import { KingdomApiService } from "../services/kingdom-api.service";
 })
 export class EntireAgeChartComponent implements AfterViewInit {
   @Input('data') data: string;  
-  chart: any = [];
+  networthTotalChart: any = [];
+  networthAverageChart: any = [];
+  landTotalChart: any = [];
+  landAverageChart: any = [];
+  honorTotalChart: any = [];
 
   landTotal: false;
   landAverage: true;
@@ -60,8 +64,10 @@ export class EntireAgeChartComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(()=>{
-      let ctx = this.elementRef.nativeElement.querySelector(`#canvas`);
+      let ctx = this.elementRef.nativeElement.querySelector(`#networthAverageChartCanvas`);
+      let ctx2 = this.elementRef.nativeElement.querySelector(`#networthTotalsChartCanvas`);
       this.createChart(ctx);
+      this.createChart(ctx2);
     })
   }
 
@@ -70,38 +76,58 @@ export class EntireAgeChartComponent implements AfterViewInit {
 
       const dates = Object.keys(data);
 
-     
-      
-      
-      let kingdomTotals = dates.map((day)=> {
+
+      //Networth Total
+      let ourKDnetworthTotal = dates.map((day)=> {
         return data[day].ourKd.totals.networthTotal;
-        // console.log(kingdomTotals.ourKdData["landTotal"]);
       })
 
-      let enemyKdTotals = dates.map((day)=> {
+      let enemyKdNetworthTotal = dates.map((day)=> {
         return data[day].enemyKd.totals.networthTotal;
-        // console.log(kingdomTotals.ourKdData["landTotal"]);
       })
 
-      
-
-      const kdTotalDataset = {
-        data: kingdomTotals,
+      const ourKDnetworthTotalData = {
+        data: ourKDnetworthTotal,
         borderColor: "green",
         fill: false
       }
 
-      const enemyKdTotalsDataset = {
-        data: enemyKdTotals,
+      const enemyKdNetworthTotalData = {
+        data: enemyKdNetworthTotal,
+        borderColor: "red",
+        fill: false
+      }
+
+      
+      //networthAverage
+      let ourKDnetworthAverage = dates.map((day)=> {
+        return data[day].ourKd.totals.networthAverage;
+      })
+
+      let enemyKdNetworthAverage = dates.map((day)=> {
+        return data[day].enemyKd.totals.networthAverage;
+      })
+
+      const ourKDnetworthAverageData = {
+        data: ourKDnetworthTotal,
+        borderColor: "green",
+        fill: false
+      }
+
+      const enemyKdNetworthAverageData = {
+        data: enemyKdNetworthTotal,
         borderColor: "red",
         fill: false
       }
       
-      let derp = this.createChartData(dates, [kdTotalDataset, enemyKdTotalsDataset])
-      
-      // newChartData.data.datasets[1] = enemyKdTotals;
+      let networthTotal = this.createChartData(dates, [ourKDnetworthTotalData, enemyKdNetworthTotalData])
+      // let networthAverage = this.createChartData(dates, [ourKDnetworthAverageData, enemyKdNetworthAverageData])
 
-      this.chart = new Chart(ctx, derp);
+      this.networthTotalChart = new Chart(ctx, networthTotal);
+      // this.networthAverageChart = new Chart(ctx, networthAverage);
+      
+      
+      
     });
   }
 
