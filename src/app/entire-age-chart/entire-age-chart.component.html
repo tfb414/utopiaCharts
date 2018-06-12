@@ -1,12 +1,25 @@
-<!-- 
-<div *ngIf=true>
-    <p>Average Networth per acre</p>
-  <canvas id="networthAverageChartCanvas">{{ networthAverageChart }}</canvas>
-</div> -->
 <div *ngIf=true>
     <p>Networth Total</p>
   <canvas id="networthTotalsChartCanvas">{{ networthTotalChart }}</canvas>
 </div>
+<div *ngIf=true>
+  <p>Total Acres</p>
+<canvas id="landAcreTotalChartCanvas">{{ landTotalChart }}</canvas>
+</div>
+<div *ngIf=true>
+  <p>honor Total</p>
+<canvas id="honorTotalsChartCanvas">{{ honorTotalChart }}</canvas>
+</div>
+<div *ngIf=true>
+  <p>Networth difference</p>
+<canvas id="networthDifferenceChartContext">{{ networthDifferenceChart }}</canvas>
+</div>
+<div *ngIf=true>
+  <p>Networth percent</p>
+<canvas id="networthPercentChartCanvas">{{ networthPercentChart }}</canvas>
+</div>
+
+
 <!-- <div class='chart-data'> -->
   
   <!-- <button ng-if=""Average Land</button>

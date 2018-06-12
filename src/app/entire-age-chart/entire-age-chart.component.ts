@@ -10,10 +10,10 @@ import { KingdomApiService } from "../services/kingdom-api.service";
 export class EntireAgeChartComponent implements AfterViewInit {
   @Input('data') data: string;  
   networthTotalChart: any = [];
-  networthAverageChart: any = [];
   landTotalChart: any = [];
-  landAverageChart: any = [];
   honorTotalChart: any = [];
+  networthDifferenceChart: any = [];
+  networthPercentageChart: any = [];
 
   landTotal: false;
   landAverage: true;
@@ -64,69 +64,157 @@ export class EntireAgeChartComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     setTimeout(()=>{
-      let ctx = this.elementRef.nativeElement.querySelector(`#networthAverageChartCanvas`);
-      let ctx2 = this.elementRef.nativeElement.querySelector(`#networthTotalsChartCanvas`);
-      this.createChart(ctx);
-      this.createChart(ctx2);
+      let networthTotalContext = this.elementRef.nativeElement.querySelector(`#networthTotalsChartCanvas`);
+      let landTotalContext = this.elementRef.nativeElement.querySelector(`#landAcreTotalChartCanvas`);
+      let honorTotalContext = this.elementRef.nativeElement.querySelector(`#honorTotalsChartCanvas`);
+      
+      this.networthTotalChart = this.createChart(networthTotalContext, "networthTotal");
+      this.landTotalChart = this.createChart(landTotalContext, "landTotal");
+      this.honorTotalChart = this.createChart(honorTotalContext, "honorTotal");
+      // this.createChart(ctx2);
+
+      let networthDifferenceContext = this.elementRef.nativeElement.querySelector(`#networthDifferenceChartContext`);
+      this.networthDifferenceChart = this.createNetworthDifferenceChart(networthDifferenceContext);
+
+      let networthPercentContext = this.elementRef.nativeElement.querySelector(`#networthPercentChartCanvas`);
+      this.networthPercentageChart = this.createNetworthPercentageChart(networthPercentContext);
     })
   }
 
-  createChart(ctx) {
+  createNetworthDifferenceChart(ctx) {
+    this._kingdomAPI.getData().subscribe((data) => {
+
+      const dates = Object.keys(data);
+
+      let ourKdDataRaw = dates.map((day)=> {
+        return data[day].ourKd.totals.networthTotal;
+      })
+
+      let enemyKdDataRaw = dates.map((day)=> {
+        return data[day].enemyKd.totals.networthTotal;
+      })
+
+      let dataForFnOverTimeSubtract = ourKdDataRaw.map((point, i)=> {
+        return point - enemyKdDataRaw[i];
+      })
+
+      console.log('dataforfnovertime',dataForFnOverTimeSubtract);
+      console.log('ourKdDataRaw', ourKdDataRaw);
+
+      const fnOverTimeDataset = {
+        data: dataForFnOverTimeSubtract,
+        borderColor: "blue",
+        fill: false
+      }
+
+      return new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: dates,
+        datasets: [fnOverTimeDataset],
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [
+            {
+              display: true
+            }
+          ],
+          yAxes: [
+            {
+              display: true
+            }
+          ]
+        }
+      }
+    });
+    })
+  }
+
+  createNetworthPercentageChart(ctx) {
+    this._kingdomAPI.getData().subscribe((data) => {
+
+      const dates = Object.keys(data);
+
+      let ourKdDataRaw = dates.map((day)=> {
+        return data[day].ourKd.totals.networthTotal;
+      })
+
+      let enemyKdDataRaw = dates.map((day)=> {
+        return data[day].enemyKd.totals.networthTotal;
+      })
+
+      let dataForFnOverTimePercentage = ourKdDataRaw.map((point, i)=> {
+        return point / enemyKdDataRaw[i];
+      })
+
+      const fnOverTimeDataset = {
+        data: dataForFnOverTimePercentage,
+        borderColor: "blue",
+        fill: false
+      }
+
+      return new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: dates,
+        datasets: [fnOverTimeDataset],
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [
+            {
+              display: true
+            }
+          ],
+          yAxes: [
+            {
+              display: true
+            }
+          ]
+        }
+      }
+    });
+
+    })
+  }
+
+  createChart(ctx, chartName) {
     this._kingdomAPI.getData().subscribe((data) => {
 
       const dates = Object.keys(data);
 
 
-      //Networth Total
-      let ourKDnetworthTotal = dates.map((day)=> {
-        return data[day].ourKd.totals.networthTotal;
+      // Networth Total
+      let ourKdDataRaw = dates.map((day)=> {
+        return data[day].ourKd.totals[chartName];
       })
 
-      let enemyKdNetworthTotal = dates.map((day)=> {
-        return data[day].enemyKd.totals.networthTotal;
+      let enemyKdDataRaw = dates.map((day)=> {
+        return data[day].enemyKd.totals[chartName];
       })
 
-      const ourKDnetworthTotalData = {
-        data: ourKDnetworthTotal,
+      const ourKdData = {
+        data: ourKdDataRaw,
         borderColor: "green",
         fill: false
       }
 
-      const enemyKdNetworthTotalData = {
-        data: enemyKdNetworthTotal,
+      const enemyKdData = {
+        data: enemyKdDataRaw,
         borderColor: "red",
         fill: false
       }
 
-      
-      //networthAverage
-      let ourKDnetworthAverage = dates.map((day)=> {
-        return data[day].ourKd.totals.networthAverage;
-      })
+      let chartData = this.createChartData(dates, [ourKdData, enemyKdData])
 
-      let enemyKdNetworthAverage = dates.map((day)=> {
-        return data[day].enemyKd.totals.networthAverage;
-      })
-
-      const ourKDnetworthAverageData = {
-        data: ourKDnetworthTotal,
-        borderColor: "green",
-        fill: false
-      }
-
-      const enemyKdNetworthAverageData = {
-        data: enemyKdNetworthTotal,
-        borderColor: "red",
-        fill: false
-      }
-      
-      let networthTotal = this.createChartData(dates, [ourKDnetworthTotalData, enemyKdNetworthTotalData])
-      // let networthAverage = this.createChartData(dates, [ourKDnetworthAverageData, enemyKdNetworthAverageData])
-
-      this.networthTotalChart = new Chart(ctx, networthTotal);
-      // this.networthAverageChart = new Chart(ctx, networthAverage);
-      
-      
+      return new Chart(ctx, chartData);
       
     });
   }
