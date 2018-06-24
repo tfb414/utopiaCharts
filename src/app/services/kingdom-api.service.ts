@@ -9,7 +9,6 @@ export class KingdomApiService {
   getData() {
     
     return this._http.get("https://timbrady.net/data.txt").map((result) => {
-      console.log('kingdom-api inside map', result);
       return result;
     });
   }

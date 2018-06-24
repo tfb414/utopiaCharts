@@ -9,17 +9,17 @@ import { KingdomApiService } from "../services/kingdom-api.service";
 })
 export class EntireAgeChartComponent implements AfterViewInit {
   @Input('data') data: string;  
-  networthTotalChart: any = [];
+  networthTotalChart: Array<any> = [];
   landTotalChart: any = [];
   honorTotalChart: any = [];
   networthDifferenceChart: any = [];
   networthPercentageChart: any = [];
 
-  landTotal: false;
-  landAverage: true;
-  networthAverage: false;
-  networthTotal: false;
-  honorTotal: false;
+  landTotal: boolean = false;
+  landAverage: boolean = true;
+  networthAverage: boolean = false;
+  networthTotal: boolean = false;
+  honorTotal: boolean = false;
 
   constructor(
     private _kingdomAPI: KingdomApiService,
@@ -71,7 +71,6 @@ export class EntireAgeChartComponent implements AfterViewInit {
       this.networthTotalChart = this.createChart(networthTotalContext, "networthTotal");
       this.landTotalChart = this.createChart(landTotalContext, "landTotal");
       this.honorTotalChart = this.createChart(honorTotalContext, "honorTotal");
-      // this.createChart(ctx2);
 
       let networthDifferenceContext = this.elementRef.nativeElement.querySelector(`#networthDifferenceChartContext`);
       this.networthDifferenceChart = this.createNetworthDifferenceChart(networthDifferenceContext);
@@ -187,7 +186,7 @@ export class EntireAgeChartComponent implements AfterViewInit {
 
   createChart(ctx, chartName) {
     this._kingdomAPI.getData().subscribe((data) => {
-
+//move create chart inside of the api call
       const dates = Object.keys(data);
 
 
@@ -217,6 +216,8 @@ export class EntireAgeChartComponent implements AfterViewInit {
       return new Chart(ctx, chartData);
       
     });
+
+    
   }
 
   
