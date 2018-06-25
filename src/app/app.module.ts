@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { KingdomApiService } from './services/kingdom-api.service';
+import { KingdomApiService } from './services/kingdom-api/kingdom-api.service';
 import { EntireAgeChartComponent } from './entire-age-chart/entire-age-chart.component';
 
 @NgModule({
