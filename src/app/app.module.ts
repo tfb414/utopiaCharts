@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { KingdomApiService } from './services/kingdom-api/kingdom-api.service';
 import { EntireAgeChartComponent } from './entire-age-chart/entire-age-chart.component';
+import { CreateChartService } from './services/create-chart/create-chart.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { EntireAgeChartComponent } from './entire-age-chart/entire-age-chart.com
     BrowserModule,
     HttpClientModule
   ],
-  providers: [KingdomApiService],
+  providers: [KingdomApiService, CreateChartService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
